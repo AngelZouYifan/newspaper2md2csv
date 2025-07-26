@@ -1,7 +1,7 @@
 
 1. Install pymupdf4llm `pip install pymupdf4llm`
 
-2. Add newspaper folder
+2. Add newspaper into data folder
 
 3. In `pdfs2csv.py`. Change the following parameters accordingly
 
@@ -15,3 +15,7 @@ IGNORE_KEYWORDS = ["DAILY NATION", "National News"] # when extracting titles, ig
 
 Note:
 L91 `print(f"{i+1} files parsed")` - Start over after this index if program crashes
+
+Keywords:
+Standard Gauge Railway 
+SGR

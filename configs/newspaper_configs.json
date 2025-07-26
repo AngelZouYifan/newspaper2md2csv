@@ -1,0 +1,26 @@
+{
+  "daily_nation_first100": {
+    "folder_name": "Daily_Nation_first100",
+    "agency": "Daily Nation",
+    "ignore_keywords": ["DAILY NATION", "National News"],
+    "header_delim": "〇〇〇",
+    "header_placeholder": "〇〇〇",
+    "date_regex": "(?:(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day[,\\s]*)?(January|February|March|April|May|June|July|August|September|October|November|December)[,\\s]*([1-9]|[12]\\d|3[01])[,\\s]*\\d{4}"
+  },
+  "business_daily": {
+    "folder_name": "Business Daily",
+    "agency": "Business Daily",
+    "ignore_keywords": ["BUSINESS DAILY"],
+    "header_delim": "〇〇〇",
+    "header_placeholder": "〇〇〇",
+    "date_regex": "(?:(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day[,\\s]*)?(January|February|March|April|May|June|July|August|September|October|November|December)[,\\s]*([1-9]|[12]\\d|3[01])[,\\s]*\\d{4}"
+  },
+  "daily_nation_full": {
+    "folder_name": "SGR Articles Daily Nation",
+    "agency": "Daily Nation",
+    "ignore_keywords": ["DAILY NATION", "National News"],
+    "header_delim": "〇〇〇",
+    "header_placeholder": "〇〇〇",
+    "date_regex": "(?:(?:Mon|Tues|Wednes|Thurs|Fri|Satur|Sun)day[,\\s]*)?(January|February|March|April|May|June|July|August|September|October|November|December)[,\\s]*([1-9]|[12]\\d|3[01])[,\\s]*\\d{4}"
+  }
+} 
