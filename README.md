@@ -30,7 +30,7 @@ data/
 └── SGR Articles Daily Nation/
 ```
 
-**Important**: After adding new newspaper folders, you must update the configuration file `configs/newspaper_configs.json` to include the new newspapers. See [[NEWSPAPER_CONFIG.md]] for detailed configuration instructions.
+**Important**: After adding new newspaper folders, you must update the configuration file `configs/newspaper_configs.json` to include the new newspapers. See [NEWSPAPER_CONFIG.md](NEWSPAPER_CONFIG.md) for detailed configuration instructions.
 
 ### 2. Run the Script
 **Process a specific newspaper:**
