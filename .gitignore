@@ -1,6 +1,6 @@
-# Ignore data folder except demo folder
+# Ignore data folder content but include the folder itself
 data/*
-!data/demo/
+!data/
 
 # Python
 __pycache__/
