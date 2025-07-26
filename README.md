@@ -62,19 +62,16 @@ The script generates CSV files with the following columns:
 
 ## Features
 
-- **Multi-newspaper support**: Process different newspapers with different configurations
 - **Keyword detection**: Automatically finds specified keywords in articles
 - **Date extraction**: Uses regex patterns to extract publication dates
 - **Header filtering**: Ignores unwanted headers (e.g., newspaper mastheads)
-- **Batch processing**: Handles large numbers of PDF files efficiently
-- **Resume capability**: Start processing from any index if interrupted
 
 ## Configuration
 
 Newspaper configurations are stored in `configs/newspaper_configs.json`. Each newspaper has:
 - `folder_name`: Directory name in `data/`
 - `agency`: Newspaper agency name
-- `ignore_keywords`: Headers to exclude from extraction
+- `ignore_keywords`: Headers to exclude from extraction (e.g., newspaper mastheads)
 - `keywords`: Terms to search for in articles
 - `header_delim`: Delimiter for headers in CSV output
 - `header_placeholder`: Placeholder text for headers in body
@@ -82,16 +79,6 @@ Newspaper configurations are stored in `configs/newspaper_configs.json`. Each ne
 
 ## Troubleshooting
 
-- **Missing data warnings**: Check if PDFs have proper text extraction
+- **Missing data warnings**: Program will print filenames that have missing data. Check [debug folder](debug/pdf2md.py) to extract content from a single pdf file for debugging.
 - **Resume processing**: Use the starting index parameter to continue from where you left off
 - **Configuration errors**: Ensure `configs/newspaper_configs.json` is valid JSON
-
-## Keywords
-
-Common keywords for SGR (Standard Gauge Railway) articles:
-- Standard Gauge Railway
-- SGR
-- Railway
-- Infrastructure
-- Transport
-- Development
