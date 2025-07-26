@@ -2,10 +2,10 @@ import pymupdf4llm
 import pathlib
 import re
 import csv
-import os
 import math
 import json
 import sys
+import os
 
 
 ##### Helper Functions #####
@@ -16,16 +16,44 @@ def extract_date(text):
     return match.group(0) if match else None
 
 
+def find_keywords_in_content(text, headers, keywords):
+    """Find keywords in article content and headers. Only record 1st instance of each keyword."""
+    if not keywords:
+        return ""
+    
+    found_keywords = []
+    search_text = text.lower()
+    headers_text = " ".join(headers).lower()
+    
+    for keyword in keywords:
+        keyword_lower = keyword.lower()
+        # Only process each keyword once; if found, add and move to next keyword
+        if keyword_lower in search_text or keyword_lower in headers_text:
+            found_keywords.append(keyword)
+        # No further processing for this keyword after first found; move to next keyword
+
+    # Join keywords with semicolon to avoid CSV comma issues
+    return "; ".join(found_keywords)
+
+
 def get_csv_filename(base_name, file_number):
     """Generate CSV filename with number suffix if needed"""
+    # Ensure sheets directory exists
+    sheets_dir = pathlib.Path("sheets")
+    sheets_dir.mkdir(exist_ok=True)
+    
     if file_number == 1:
-        return f"{base_name}.csv"
+        return sheets_dir / f"{base_name}.csv"
     else:
-        return f"{base_name}_part{file_number}.csv"
+        return sheets_dir / f"{base_name}_part{file_number}.csv"
 
 
 def write_csv_header(filename):
     """Write CSV header to the specified file"""
+    # Ensure sheets directory exists
+    sheets_dir = pathlib.Path("sheets")
+    sheets_dir.mkdir(exist_ok=True)
+    
     with open(filename, "w", newline='', encoding="utf-8-sig") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
         writer.writeheader()
@@ -110,13 +138,14 @@ if config is None:
 NEWSPAPER_FOLDER_NAME = config["folder_name"]
 NEWSPAPER_AGENCY = config["agency"]
 IGNORE_KEYWORDS = config["ignore_keywords"]
+KEYWORDS = config.get("keywords", [])  # Get keywords from config, default to empty list
 HEADER_DELIM = config["header_delim"]
 HEADER_PLACEHOLDER = config["header_placeholder"]
 
 # DO NOT CHANGE
 INPUT_PATH = pathlib.Path("data/" + NEWSPAPER_FOLDER_NAME)
 OUTPUT_CSV_BASE = NEWSPAPER_FOLDER_NAME
-FIELDNAMES = ["file_name", "newspaper_agency", "date", "headers", "body"]
+FIELDNAMES = ["file_name", "newspaper_agency", "date", "headers", "body", "keywords"]
 
 HEADER_REGEX = re.compile(r"^(#{1,6})\s*(.+)$", re.MULTILINE)
 DATE_REGEX = re.compile(config["date_regex"], re.IGNORECASE)
@@ -126,6 +155,7 @@ print("="*60)
 print(f"PROCESSING NEWSPAPER: {NEWSPAPER_AGENCY}")
 print(f"FOLDER: {NEWSPAPER_FOLDER_NAME}")
 print(f"IGNORE KEYWORDS: {IGNORE_KEYWORDS}")
+print(f"SEARCH KEYWORDS: {KEYWORDS}")
 print("="*60)
 
 
@@ -153,8 +183,8 @@ if total_files == 0:
 # Get user input for max lines per CSV
 print(f"\nFound {total_files} PDF files to process.")
 max_lines = get_user_input(
-    f"Enter maximum number of lines per CSV file", 
-    min_value=100, 
+    f"Enter maximum number of lines per CSV file (default: 1000)", 
+    min_value=1, 
     max_value=total_files,
     default=1000
 )
@@ -209,12 +239,16 @@ for i in range(start_index, total_files):
 
     body = HEADER_REGEX.sub(header_sub, md_text).strip()
 
+    # Find keywords in content
+    found_keywords = find_keywords_in_content(body, headers, KEYWORDS)
+
     row = {
         "file_name": pdf.name.rsplit('.', 1)[0],
         "newspaper_agency": NEWSPAPER_AGENCY,
         "date": date,
         "headers": HEADER_DELIM.join(headers),
-        "body": body
+        "body": body,
+        "keywords": found_keywords
     }
 
     # Check if we need to start a new CSV file
